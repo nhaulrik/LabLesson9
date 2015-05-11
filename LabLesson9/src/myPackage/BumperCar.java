@@ -92,7 +92,14 @@ class DetectWall extends Thread implements Behavior
   
   public void run()
   {
-    while ( true ) distance = sonar.getDistance();
+	Thread t1 = new Thread(new Runnable(){
+
+		@Override
+		public void run() {
+			while ( true ) distance = sonar.getDistance();
+		}  
+	  });
+	  t1.start();
   }
 
   public int takeControl()
@@ -160,9 +167,10 @@ class Exit implements Behavior
 
 public int takeControl()
   {
-    if ( Button.ESCAPE.isPressed() )
-    	return 200;
+    if ( Button.ESCAPE.isPressed()) {
+    	return 0; } else {
     return 0;
+    }
   }
 
   public void suppress()
