@@ -1,9 +1,9 @@
 package myPackage;
 
 
+
+
 import lejos.nxt.*;
-import lejos.robotics.subsumption.Arbitrator;
-import lejos.robotics.subsumption.Behavior;
 
 /**
  * Demonstration of the Behavior subsumption classes.
@@ -26,6 +26,7 @@ public class BumperCar
 
   public static void main(String[] args)
   {
+	  
     Motor.A.setSpeed(400);
     Motor.C.setSpeed(400);
     Behavior b1 = new DriveForward();
@@ -37,7 +38,7 @@ public class BumperCar
     };
     Arbitrator arbitrator = new Arbitrator(behaviorList);
     LCD.drawString("Bumper Car",0,1);
-    Button.waitForPress();
+  //  Button.waitForPress();
     arbitrator.start();
   }
 }
@@ -112,7 +113,7 @@ class DetectWall extends Thread implements Behavior
   {
     _suppressed = false;
     active = true;
-    Sound.beepSequenceUp();
+   // Sound.beepSequenceUp();
 	
     // Backward for 1000 msec
     LCD.drawString("Drive backward",0,3);
@@ -145,7 +146,7 @@ class DetectWall extends Thread implements Behavior
     Motor.A.stop(); 
     Motor.C.stop();
     LCD.drawString("Stopped       ",0,3);
-    Sound.beepSequence();
+   // Sound.beepSequence();
     active = false;
     
   }
@@ -157,7 +158,7 @@ class Exit implements Behavior
 {
   private boolean _suppressed = false;
 
-  public int takeControl()
+public int takeControl()
   {
     if ( Button.ESCAPE.isPressed() )
     	return 200;
