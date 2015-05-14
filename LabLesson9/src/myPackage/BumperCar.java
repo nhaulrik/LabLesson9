@@ -24,6 +24,8 @@ import lejos.nxt.*;
 
 public class BumperCar
 {
+	
+	
 
   public static void main(String[] args)
   {
@@ -48,6 +50,8 @@ public class BumperCar
 class LookForTarget implements Behavior
 {
 
+	private boolean _suppressed = false;
+	
 	@Override
 	public int takeControl() {
 		// TODO Auto-generated method stub
