@@ -34,7 +34,11 @@ public class BumperCar
     Motor.C.setSpeed(400);
     Behavior b1 = new LookForTarget();
     Behavior b2 = new DetectWall();
-    Behavior b3 = new Exit();
+    
+    Behavior b3 = new Survive();
+    
+    
+   // Behavior b3 = new Exit();
     Behavior[] behaviorList =
     {
       b1, b2, b3
@@ -47,10 +51,99 @@ public class BumperCar
 }
 
 
+
+
+
+
+
+class Survive extends Thread implements Behavior
+{
+    private boolean _suppressed = false;
+    private int lightValue;
+
+
+    public Survive() {
+        
+        light = new LightSensor(SensorPort.S2);
+        light.setFloodlight(true);
+        
+         this.setDaemon(true);
+         this.start();
+    }
+    
+    
+    public void run()
+      {
+        Thread t1 = new Thread(new Runnable(){
+
+            @Override
+            public void run() {
+                while ( true ) lightValue = light.readValue();
+            }  
+          });
+          t1.start();
+      }
+    
+    
+    public int takeControl() {
+        // TODO Auto-generated method stub
+        
+    	if(lightValue > 48) {
+    		return 200;
+    	} 
+    	else { 
+    		return 0;
+    	}
+    }
+
+    
+    public void action() {
+        // TODO Auto-generated method stub
+        _suppressed = false;
+        LCD.drawString("Survive:       ",0,2);
+        LCD.drawInt(lightValue,0,3);
+        LCD.refresh();
+       
+        int now = (int)System.currentTimeMillis();
+         while (!_suppressed && ((int)System.currentTimeMillis()< now + 1000))
+            {
+        	 //
+        	 
+   
+             
+        	 Thread.yield(); //don't exit till suppressed
+            }
+        
+         Sound.beepSequenceUp();
+        
+      	Motor.A.rotate(-360, true);// start Motor.A rotating backward
+    	Motor.C.rotate(-360, true);  // start Motor.C rotating backward
+        
+    
+
+        
+    }
+
+    @Override
+    public void suppress() {
+        // TODO Auto-generated method stub
+        _suppressed = true;// standard practice for suppress methods
+
+    }
+    private LightSensor light;
+
+}
+
+
+
+
+
+
+
+
 class LookForTarget implements Behavior
 {
-	private boolean _suppressed = false;
-
+	
 	private boolean _suppressed = false;
 	
 	@Override
@@ -123,6 +216,9 @@ class DriveForward implements Behavior
     LCD.drawString("Drive stopped",0,2);
   }
 }
+
+
+
 
 
 class DetectWall extends Thread implements Behavior
