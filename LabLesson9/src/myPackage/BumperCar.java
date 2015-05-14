@@ -33,15 +33,14 @@ public class BumperCar
     Motor.A.setSpeed(400);
     Motor.C.setSpeed(400);
     Behavior b1 = new LookForTarget();
-    Behavior b2 = new DetectWall();
+    Behavior b2 = new Charge();
     
     Behavior b3 = new Survive();
-    
-    
-   // Behavior b3 = new Exit();
+    Behavior b4 = new Exit();
+
     Behavior[] behaviorList =
     {
-      b1, b2, b3
+      b1, b2, b3, b4
     };
     Arbitrator arbitrator = new Arbitrator(behaviorList);
     LCD.drawString("Bumper Car",0,1);
@@ -178,7 +177,94 @@ class LookForTarget implements Behavior
 	
 }
 
+class Charge extends Thread implements Behavior
+{
+	private boolean _suppressed = false;
+	private boolean active = false;
+	private int leftDistance = 255;
+	private int rightDistance = 255;
+	
+	private UltrasonicSensor leftSonar;
+	private UltrasonicSensor rightSonar;
+	
+	public Charge()
+	{
+		leftSonar = new UltrasonicSensor(SensorPort.S1);
+		rightSonar = new UltrasonicSensor(SensorPort.S4);
+	    
+		this.setDaemon(true);
+	    this.start();
+		
+	}
+	
+	  public void run()
+	  {
+		Thread t1 = new Thread(new Runnable(){
+	
+			@Override
+			public void run() {
+				while ( true ){
+					leftDistance = leftSonar.getDistance();
+					rightDistance = rightSonar.getDistance();
+				}
+			}  
+		  });
+		  t1.start();
+	  }
 
+	@Override
+	public int takeControl() {
+		// TODO Auto-generated method stub
+		if (leftDistance < 20 || rightDistance < 20)
+		       return 100;
+	    if ( active )
+	       return 50;
+	    return 0;
+	}
+
+	@Override
+	public void action() {
+		// TODO Auto-generated method stub
+	    _suppressed = false;
+	    active = true;
+	    
+	    //Do charge behavior
+	    
+	    Motor.A.setSpeed(360 * 3);
+	    Motor.C.setSpeed(360 * 3);
+
+	    Motor.A.forward();
+	    Motor.C.forward();
+	    LCD.drawString("Charge         ",0,2);
+	    LCD.drawString("Distance: " + leftDistance, 0, 3);
+
+	    int now = (int)System.currentTimeMillis();
+	    while (!_suppressed && ((int)System.currentTimeMillis()< now + 1000) )
+	    {
+	      Thread.yield(); //don't exit till suppressed
+	    }
+	    Motor.A.stop(); // not strictly necessary, but good programming practice
+	    Motor.C.stop();
+	    LCD.drawString("Charge stopped ",0,2);
+	    
+	    
+	    
+	    //End with active = false;
+	    Motor.A.setSpeed(400);
+	    Motor.C.setSpeed(400);
+	    _suppressed = true;
+	    active = false;
+		
+		
+	}
+
+	@Override
+	public void suppress() {
+		// TODO Auto-generated method stub
+		 _suppressed = true;// standard practice for suppress methods
+	}
+	
+}
 
 
 
@@ -190,6 +276,7 @@ class DriveForward implements Behavior
 {
 
   private boolean _suppressed = false;
+  
 
   public int takeControl()
   {
