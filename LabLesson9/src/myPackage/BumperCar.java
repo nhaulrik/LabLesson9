@@ -364,7 +364,7 @@ class DetectWall extends Thread implements Behavior
        Thread.yield(); //don't exit till suppressed
     }
     
-    // Stop for 1000 msec
+    // Stop for 1000 msec 
     LCD.drawString("Stopped       ",0,3);
     Motor.A.stop(); 
     Motor.C.stop();
