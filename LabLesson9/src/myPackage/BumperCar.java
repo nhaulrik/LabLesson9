@@ -1,6 +1,6 @@
 package myPackage;
 
-//hej
+//hej v1.2
 
 import lejos.nxt.*;
 
@@ -82,7 +82,7 @@ class Survive extends Thread implements Behavior
           });
           t1.start();
       }
-    
+     
     
     public int takeControl() {
         // TODO Auto-generated method stub
