@@ -38,10 +38,41 @@ public class BumperCar
     };
     Arbitrator arbitrator = new Arbitrator(behaviorList);
     LCD.drawString("Bumper Car",0,1);
-  //  Button.waitForPress();
+    //Button.waitForPress();
     arbitrator.start();
   }
 }
+
+
+class LookForTarget implements Behavior
+{
+
+	@Override
+	public int takeControl() {
+		// TODO Auto-generated method stub
+		return 10;
+	}
+
+	@Override
+	public void action() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void suppress() {
+		// TODO Auto-generated method stub
+		_suppressed = true;// standard practice for suppress methods
+	}
+	
+}
+
+
+
+
+
+
+
 
 
 class DriveForward implements Behavior
