@@ -1,6 +1,6 @@
 package myPackage;
 
-
+//hej
 
 
 import lejos.nxt.*;
@@ -168,7 +168,7 @@ class Exit implements Behavior
 public int takeControl()
   {
     if ( Button.ESCAPE.isPressed()) {
-    	return 0; } else {
+    	return 200; } else {
     return 0;
     }
   }
