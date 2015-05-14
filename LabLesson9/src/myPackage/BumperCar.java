@@ -107,18 +107,18 @@ class Survive extends Thread implements Behavior
          while (!_suppressed && ((int)System.currentTimeMillis()< now + 1000))
             {
         	 //
-        	 
+        	    //Sound.beepSequenceUp();
+                
+              	Motor.A.rotate(-720, true);// start Motor.A rotating backward
+            	Motor.C.rotate(-720, true);  // start Motor.C rotating backward
+                
+            
    
              
         	 Thread.yield(); //don't exit till suppressed
             }
         
-         Sound.beepSequenceUp();
-        
-      	Motor.A.rotate(-360, true);// start Motor.A rotating backward
-    	Motor.C.rotate(-360, true);  // start Motor.C rotating backward
-        
-    
+     
 
         
     }
@@ -215,7 +215,7 @@ class Charge extends Thread implements Behavior
 	@Override
 	public int takeControl() {
 		// TODO Auto-generated method stub
-		if (leftDistance < 20 || rightDistance < 20)
+		if (leftDistance < 40 || rightDistance < 40)
 		       return 100;
 	    if ( active )
 	       return 50;
@@ -238,8 +238,8 @@ class Charge extends Thread implements Behavior
 	    LCD.drawString("Charge         ",0,2);
 	    LCD.drawString("Distance: " + leftDistance, 0, 3);
 
-	    int now = (int)System.currentTimeMillis();
-	    while (!_suppressed && ((int)System.currentTimeMillis()< now + 1000) )
+	   // int now = (int)System.currentTimeMillis();
+	    while (!_suppressed )
 	    {
 	      Thread.yield(); //don't exit till suppressed
 	    }
