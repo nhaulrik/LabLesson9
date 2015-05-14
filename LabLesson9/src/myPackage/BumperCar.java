@@ -2,7 +2,6 @@ package myPackage;
 
 //hej
 
-
 import lejos.nxt.*;
 
 /**
@@ -21,6 +20,8 @@ import lejos.nxt.*;
  * Exit behavior inserted, local distance sampling thread and
  * backward drive added in DetectWall by Ole Caprani, 23-4-2012
  */
+
+
 public class BumperCar
 {
 
