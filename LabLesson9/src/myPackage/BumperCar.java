@@ -3,6 +3,7 @@ package myPackage;
 //hej v1.2
 
 import lejos.nxt.*;
+import lejos.util.Delay;
 
 /**
  * Demonstration of the Behavior subsumption classes.
@@ -29,6 +30,8 @@ public class BumperCar
 
   public static void main(String[] args)
   {
+	
+	 
 	  
     Motor.A.setSpeed(400);
     Motor.C.setSpeed(400);
@@ -44,9 +47,14 @@ public class BumperCar
     };
     Arbitrator arbitrator = new Arbitrator(behaviorList);
     LCD.drawString("Bumper Car",0,1);
-    //Button.waitForPress();
+	
+    
     arbitrator.start();
-  }
+    
+    
+
+	 }
+  
 }
 
 
@@ -163,9 +171,7 @@ class LookForTarget implements Behavior
 	    {
 	      Thread.yield(); //don't exit till suppressed
 	    }
-	    Motor.A.stop(); // not strictly necessary, but good programming practice
-	    Motor.C.stop();
-	    LCD.drawString("Looking stopped",0,2);
+	  
 		
 	}
 
@@ -215,44 +221,49 @@ class Charge extends Thread implements Behavior
 	@Override
 	public int takeControl() {
 		// TODO Auto-generated method stub
-		if (leftDistance < 40 || rightDistance < 40)
+		if (leftDistance < 60 ||  rightDistance < 60 )  {
 		       return 100;
-	    if ( active )
-	       return 50;
-	    return 0;
+		} 
+		else {
+	       return 0;
+		}
 	}
 
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
 	    _suppressed = false;
-	    active = true;
+	   // active = true;
 	    
 	    //Do charge behavior
 	    
-	    Motor.A.setSpeed(360 * 3);
-	    Motor.C.setSpeed(360 * 3);
+	   
+	    Motor.A.setSpeed(400*2);
+	    Motor.C.setSpeed(400*2);
 
 	    Motor.A.forward();
 	    Motor.C.forward();
+	   
+	    
 	    LCD.drawString("Charge         ",0,2);
 	    LCD.drawString("Distance: " + leftDistance, 0, 3);
 
-	   // int now = (int)System.currentTimeMillis();
-	    while (!_suppressed )
+	   int now = (int)System.currentTimeMillis();
+	    while (!_suppressed && ((int)System.currentTimeMillis()< now + 200) )
 	    {
+		
 	      Thread.yield(); //don't exit till suppressed
 	    }
-	    Motor.A.stop(); // not strictly necessary, but good programming practice
-	    Motor.C.stop();
+	   // Motor.A.stop(); // not strictly necessary, but good programming practice
+	   // Motor.C.stop();
 	    LCD.drawString("Charge stopped ",0,2);
 	    
 	    
 	    
 	    //End with active = false;
-	    Motor.A.setSpeed(400);
-	    Motor.C.setSpeed(400);
-	    _suppressed = true;
+	   Motor.A.setSpeed(400);
+	   Motor.C.setSpeed(400);
+	  //  _suppressed = true;
 	    active = false;
 		
 		

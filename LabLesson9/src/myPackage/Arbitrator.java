@@ -1,5 +1,10 @@
 package myPackage;
 
+import lejos.nxt.Button;
+import lejos.nxt.LCD;
+import lejos.nxt.Sound;
+import lejos.util.Delay;
+
 
 /**
  * Arbitrator controls which Behavior object will become active in
@@ -51,6 +56,13 @@ public class Arbitrator
      {
          int highest, maxPriority;
 	     
+         LCD.drawString("Press Enter    ",0,2);
+
+         
+         Button.waitForAnyPress();
+         Delay.msDelay(3000);
+         Sound.beepSequenceUp();
+         
          actionThread.start();
 	     
          while (true)
