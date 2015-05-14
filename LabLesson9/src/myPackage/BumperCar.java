@@ -32,7 +32,7 @@ public class BumperCar
 	  
     Motor.A.setSpeed(400);
     Motor.C.setSpeed(400);
-    Behavior b1 = new DriveForward();
+    Behavior b1 = new LookForTarget();
     Behavior b2 = new DetectWall();
     Behavior b3 = new Exit();
     Behavior[] behaviorList =
@@ -49,6 +49,7 @@ public class BumperCar
 
 class LookForTarget implements Behavior
 {
+	private boolean _suppressed = false;
 
 	private boolean _suppressed = false;
 	
@@ -61,6 +62,18 @@ class LookForTarget implements Behavior
 	@Override
 	public void action() {
 		// TODO Auto-generated method stub
+		_suppressed = false;
+		
+		Motor.A.forward();
+	    Motor.C.backward();
+	    LCD.drawString("Look for target",0,2);
+	    while (!_suppressed)
+	    {
+	      Thread.yield(); //don't exit till suppressed
+	    }
+	    Motor.A.stop(); // not strictly necessary, but good programming practice
+	    Motor.C.stop();
+	    LCD.drawString("Looking stopped",0,2);
 		
 	}
 
